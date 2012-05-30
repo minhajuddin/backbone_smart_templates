@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Backbone template demo</title>
+    <style type="text/css">
+    #source,#output, #data, pre{
+      border : solid #888 1px;padding: 2px;
+    }
+    </style>
+    <script src='underscore.js' type="text/javascript"></script>
+    <script src='template.js' type="text/javascript"></script>
+  </head>
+  <body>
+    <h3>Rendered Output</h3>
+    <div id='output'></div>
+    <h3>Template source</h3>
+    <pre id='source'></pre>
+    <h3>Template Data</h3>
+    <pre id='data'></pre>
+    <h3>Compiled template</h3>
+    <pre id='compiled'></pre>
+    <script type="text/html" id='simple-template'>
+      <h3>This is an awesome chunk of html</h3>
+      <p>Current date is <%= (new Date()) %></p>
+      <p>Smart Template property <b><%: name %></b></p>
+      <p>NEP: <%: nonExistantProp %></p>
+      <p>Null: <%: age %></p>
+      <p>Null: <%: code %></p>
+    </script>
+    <script type="text/javascript">
+      var $ = function(id){
+        id = id.replace('#', '');
+        return document.getElementById(id);
+      },
+      data = {get: function(key){return key;} ,name: 'Backbone Aware Templates', age: null, code: function(){return 'this from an awesome function';}},
+      template = _.smartTemplate($('simple-template').innerHTML);
+      $('output').innerHTML = template(data);
+      $('source').innerHTML = _.escape($('simple-template').innerHTML);
+      $('compiled').innerHTML = _.escape(template.source);
+      for(var key in data){
+        $('data').innerHTML += key + "\t=>  " +  _.escape(data[key]) + "\n";
+      }
+  </script>
+  </body>
+</html>
